@@ -29,7 +29,7 @@ The primary dataset used for this analysis is the "HCAHPS.csv" file, containing 
 In the initial data preparation phase, we performed the following tasks:
 - Data loading and inspection
 - Identification of null values. There are no missing values.
-- Data formatting (alter data type)
+- Data formatting (alter data type where appropriate, ensure uniformity of data in each column, delete duplicate records, etc.)
 
 ### Exploratory Data Analysis
 
