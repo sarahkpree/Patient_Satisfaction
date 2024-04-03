@@ -6,8 +6,7 @@
 - [Data Sources](#data-sources)
 - [Tools](#tools)
 - [Data Cleaning and Preparation](#data-cleaning-and-preparation)
-- [Results](#results)
-- [Recommendations](#recommendations)
+- [Data Visualization](#data-visualization)
 - [Limitations](#limitations)
 
 ### Project Overview
@@ -56,42 +55,11 @@ LEFT JOIN Hospital_Beds_Prep ON Survey_Data.Facility_ID = Hospital_Beds_Prep.Pro
 AND Hospital_Beds_Prep.Nth_Row = 1;
 ```
 
-
-
-### Results
-
-The analysis results are summarized as follows:
-1. **Identifying Healthiest Employees:** There are 111 employees meeting specific health criteria, including being non-smokers, non-drinkers, having a BMI less than 25, and exhibiting lower absenteeism than the average. These employees are entitled to a bonus from a $100,000 allocation, with each eligible employee set to receive approximately $900 as recognition for their healthy lifestyle choices and low absenteeism.
-
-2.  **Non-Smoker Identification:** There are 686 non-smoking employees. With a budget allocation of $983,221 from the HR department, an hourly increase rate of $0.68 was determined for these employees, aiming to incentivize a smoke-free workplace environment.
-   
-3. **Reasons for Absenteeism:** The top 3 reasons for employee absenteeism are medical consultation, dental consultation, and physiotherapy.
-   
-4. **Temporal Analysis of Absenteeism:** Examination of absenteeism patterns throughout the week revealed Monday as the predominant day for employee absences, however with marginal differences observed across the remaining week days. Additionally, our analysis identified March as the month with the most absences.
-
-5. **Education Level and Absenteeism:** The analysis revealed that employees with higher education levels tend to exhibit lower average absenteeism hours. However, the difference in absenteeism rates among the different education levels is minimal.
-
-6. **Impact of Commute Distance:** There does not appear to be a relationship between commute distance and absenteeism.
-
-7. **Tenure and Absenteeism:** The length of employment does not appear to impact absenteeism.
-
-8. **Effect of Social Habits:** Absenteeism rates between social drinkers/smokers and non-drinkers/non-smokers do not appear to be significantl.
-
-9. **Correlation between Age and Absenteeism:** Middle-aged employees, particularly those in their 50s, exhibit notably higher average absenteeism compared to their younger counterparts. However, it is probable that there are additional underlying factors influencing these absenteeism rates.
-   
-### Recommendations
-
-Based on the analysis, the following steps are recommended:
-
-1. **Promote Health and Wellness Programs:**
-   Given the benefits associated with healthy lifestyle choices, such as lower absenteeism rates and improved employee well-being, consider implementing and promoting health and wellness programs within the organization. 
-
-2. **Flexible Work Arrangements:**
-   Recognizing Monday as the most common day for employee absences, consider implementing flexible work arrangements, such as telecommuting, to accommodate employees.
-
-3. **Employee Engagement Initiatives:** Boost employee engagement by implementing recognition programs, offering career development opportunities, and promoting work-life balance initiatives. These efforts can uplift morale and decrease absenteeism among employees.
+### Data Visualization
+The Tableau dashboard provides a detailed snapshot of patient satisfaction across US hospitals, offering valuable insights for healthcare professionals. Users can filter by state and hospital size to tailor their analysis. Visualizations include the percentage of patients rating hospitals 9 or 10, survey completion rates, and comparisons of hospitals' performance relative to other hospitals in their cohort (based on state and hospital bed capacity). This user-friendly dashboard empowers healthcare providers to identify areas for improvement and enhance patient care.
 
 ### Limitations
-- Although correlations between variables have been noted, determining causal relationships necessitates additional investigation.
-- The analysis findings may not be universally applicable across all organizations or contexts.
-- The analysis is based on certain assumptions and interpretations of the data. For instance, the definition of "healthiest employees" may vary among organizations, and the interpretation of absenteeism patterns may be subjective.
+- The completeness of the patient satisfaction data may vary across hospitals, possibly leading to inconsistencies in the analysis.
+- The number of completed surveys received by each hospital may not accurately reflect the patient population's diversity and experiences. Hospitals with low survey completion rates may not provide a complete picture, which could lead to skewed results.
+- Grouping hospitals by state and size for comparison purposes may overlook other relevant factors that influence patient satisfaction.
+
