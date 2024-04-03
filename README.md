@@ -6,92 +6,57 @@
 - [Data Sources](#data-sources)
 - [Tools](#tools)
 - [Data Cleaning and Preparation](#data-cleaning-and-preparation)
-- [Exploratory Data Analysis](#exploratory-data-analysis)
-- [SQL Query Examples](#sql-query-examples)
 - [Results](#results)
 - [Recommendations](#recommendations)
 - [Limitations](#limitations)
 
 ### Project Overview
-The Hospital Consumer Assessment of Healthcare Providers and Systems (HCAHPS) survey is a standardized survey used to measure patients' perspectives on the quality of care they received in the hospital. The survey encompasses various aspects of the patient experience, including communication with nurses and doctors, cleanliness and quietness of the hospital environment, pain management, discharge information, and overall rating of the hospital. The goal of this project was to examine the patient survey dataset to uncover key insights about the patient experience. These insights can then be used to guide better decision-making, prioritize efforts to improve quality of care, and ultimately make sure patients receive better healthcare.
+The Hospital Consumer Assessment of Healthcare Providers and Systems (HCAHPS) survey is a standardized survey used to measure patients' perspectives on the quality of care they received in the hospital. The survey encompasses various aspects of the patient experience, including communication with nurses and doctors, cleanliness and quietness of the hospital environment, pain management, discharge information, and overall rating of the hospital. The goal of this project was to create a Tableau dashboard that compares patient safisfaction across hospitals in the United States to examine healthcare quality, identify areas for improvement, and improve transparency.
 
 ### Data Sources
 The primary dataset used for this analysis is the "HCAHPS.csv" file, containing detailed information about the patient survey responses across hospitals in the United States. In addition, there is a "Hospital_Beds.csv" file which lists the number of beds each hospital has available. 
 
 ### Tools
 
-- Excel - Data Inspection
-- Microsoft SQL Server - Data Cleaning and Analysis
+- Microsoft SQL Server - Data Inspection and Cleaning
 - Tableau - Data Visualization
 
 ### Data Cleaning and Preparation
 
 In the initial data preparation phase, we performed the following tasks:
 - Data loading and inspection
-- Identification of null values. There are no missing values.
+- Identification of null values.
 - Data formatting (alter data type where appropriate, ensure uniformity of data in each column, delete duplicate records, etc.)
 
-### Exploratory Data Analysis
-
-EDA involved exploring the employee data to answer key questions, such as:
-1. Who are the healthiest employees? "Healthy" is defined as a non-smoker, non drinker, a BMI less than 25, and absent less than the employee average absent hours.
-2. Who are the employees that do not smoke?
-3. What is the most common reason for absenteeism?
-4. Is there a particular month or day of the week with higher absenteeism rates?
-5. Do employees with higher education levels tend to have lower absenteeism rates?
-6. Are employees with longer commutes more likely to be absent?
-7. How does the length of employment tenure impact absenteeism?
-8. Do social drinkers or smokers have higher absenteeism rates compared to non-drinkers and non-smokers?
-9. How does age correlate with absenteeism levels?
-
-### SQL Query Examples
-
-Below are a few SQL queries executed during exploratory data analysis.
-
-**What is the most common reason for absenteeism?**
-
 ```sql
-SELECT Reasons.Reason, COUNT(ID) AS Total_Count
-FROM AbsenteeismAtWork
-LEFT JOIN Reasons ON AbsenteeismAtWork.Reason_for_absence = Reasons.Number
-GROUP BY Reasons.Reason
-ORDER BY Total_Count DESC;
-```
+-- Provider_CNN should be a length of six and no duplicate hospitals [some hospitals have multiple bed counts because their counts were updated]
+-- Join the two tables for Tableau prep
 
-**How does the length of employment tenure impact absenteeism?**
-
-```sql
-WITH Tenure 
-AS 
-(
-SELECT Service_time,
-CASE
-    WHEN Service_time < 2 THEN 'Less than 2 years at company'
-    WHEN Service_time >= 2 AND Service_time <= 5 THEN '2-5 years at company'
-    WHEN Service_time >= 6 AND Service_time <= 10 THEN '6-10 years at company'
-    WHEN Service_time >= 11 AND Service_time <= 15 THEN '11-15 years at company'
-    WHEN Service_time >= 16 AND Service_time <= 20 THEN '16-20 years at company'
-    WHEN Service_time >= 21 THEN 'More than 20 years at company'
-    ELSE 'Unknown'
-END AS TimeAtCompany, Absenteeism_time_in_hours
-FROM AbsenteeismAtWork
-GROUP BY Service_time, Absenteeism_time_in_hours
+WITH Hospital_Beds_Prep AS 
+(SELECT 
+    Provider_CCN, Hospital_Name, Fiscal_Year_Begin_Date, Fiscal_Year_End_Date, 
+    number_of_beds, ROW_NUMBER() OVER (PARTITION BY Provider_CCN ORDER BY Fiscal_Year_End_Date DESC) AS Nth_Row
+FROM Hospital_Beds
 )
 
-SELECT TimeAtCompany, CAST(AVG(Absenteeism_time_in_hours) AS DECIMAL(5, 2)) AS Average_Hours_Absent
-FROM Tenure
-GROUP BY TimeAtCompany
-ORDER BY Average_Hours_Absent DESC;
+-- Add a leading zero when the Facility_ID (Provider_CCN) does not contain 6 numbers. All IDs should be uniform and contain 6 digits.
+
+SELECT CASE 
+        WHEN LEN(Facility_ID) < 6 THEN 
+            CONCAT(
+                SUBSTRING('000000', 1, 6 - LEN(Facility_ID)),
+                Facility_ID
+            )
+        ELSE Facility_ID
+    END AS Facility_ID, Facility_Name, Address, City_Town, State, ZIP_Code, County_Parish, 
+    Telephone_Number, HCAHPS_Measure_ID, HCAHPS_Question, HCAHPS_Answer_Description, HCAHPS_Answer_Percent, Number_of_Completed_Surveys,
+    Survey_Response_Rate_Percent, Start_Date, End_Date, Hospital_Beds_Prep.number_of_beds, Hospital_Beds_Prep.Fiscal_Year_Begin_Date, Hospital_Beds_Prep.Fiscal_Year_End_Date
+FROM Survey_Data
+LEFT JOIN Hospital_Beds_Prep ON Survey_Data.Facility_ID = Hospital_Beds_Prep.Provider_CCN
+AND Hospital_Beds_Prep.Nth_Row = 1;
 ```
 
-**Do employees with higher education levels tend to have lower absenteeism rates?**
 
-```sql
-SELECT Education, CAST(AVG(Absenteeism_time_in_hours) AS DECIMAL(5, 2)) AS Average_Hours_Absent
-FROM AbsenteeismAtWork
-GROUP BY Education
-ORDER BY Average_Hours_Absent;
-```
 
 ### Results
 
