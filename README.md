@@ -58,6 +58,8 @@ AND Hospital_Beds_Prep.Nth_Row = 1;
 ### Data Visualization
 The Tableau dashboard provides a detailed snapshot of patient satisfaction across US hospitals, offering valuable insights for healthcare professionals. Users can filter by state and hospital size to tailor their analysis. Visualizations include the percentage of patients rating hospitals 9 or 10, survey completion rates, and comparisons of hospitals' performance relative to other hospitals in their cohort (based on state and hospital bed capacity). This user-friendly dashboard empowers healthcare providers to identify areas for improvement and enhance patient care.
 
+<img width="829" alt="Screen Shot 2024-04-15 at 5 03 26 PM" src="https://github.com/sarahkpree/Patient_Satisfaction/assets/61251211/8d253424-2d11-4791-ac87-3e85dd15f4c0">
+
 ### Limitations
 - The completeness of the patient satisfaction data may vary across hospitals, possibly leading to inconsistencies in the analysis.
 - The number of completed surveys received by each hospital may not accurately reflect the patient population's diversity and experiences. Hospitals with low survey completion rates may not provide a complete picture, which could lead to skewed results.
