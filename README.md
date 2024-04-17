@@ -22,7 +22,7 @@ The primary dataset used for this analysis is the "HCAHPS.csv" file, containing 
 
 ### Data Cleaning and Preparation
 
-In the initial data preparation phase, we performed the following tasks:
+In the initial data preparation phase, I performed the following tasks:
 - Data loading and inspection
 - Identification of null values.
 - Data formatting (alter data type where appropriate, ensure uniformity of data in each column, delete duplicate records, etc.)
